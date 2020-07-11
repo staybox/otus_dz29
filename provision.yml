@@ -1,0 +1,27 @@
+---
+- name: Add records to /etc/hosts
+  hosts: all
+  become: True
+  gather_facts: False
+  roles:
+    - role: change-file-hosts
+      ip: 192.168.50.10
+      dns: server
+    - role: change-file-hosts
+      ip: 192.168.50.20
+      dns: client
+
+- name: Configure nfs server
+  hosts: server
+  become: True
+  gather_facts: False
+  roles:
+    - nfs-server
+
+- name: Configure nfs client
+  hosts: client
+  become: True
+  gather_facts: False
+  roles:
+    - nfs-client
+...
